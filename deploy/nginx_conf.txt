@@ -1,0 +1,43 @@
+# Escrever isso dentro do conf.d do nginx
+
+erver {
+    server_name cursodjango.jhonedev.xyz;
+
+    location / {
+        proxy_pass http://0.0.0.0:8000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    # ATTENTION: /home/jhonegratieri/app_repo/static
+    location /static {
+        autoindex on;
+        alias /home/jhonegratieri/app_repo/static;
+    }
+
+    # ATTENTION: /home/jhonegratieri/app_repo/media 
+    location /media {
+        autoindex on;
+        alias /home/jhonegratieri/app_repo/media;
+    }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/cursodjango.jhonedev.xyz/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/cursodjango.jhonedev.xyz/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+server {
+    if ($host = cursodjango.jhonedev.xyz) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    server_name cursodjango.jhonedev.xyz;
+    listen 80;
+    return 404; # managed by Certbot
+}

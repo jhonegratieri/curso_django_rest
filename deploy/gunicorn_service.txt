@@ -1,0 +1,29 @@
+# Escrever no  arquivo gunicorn.service
+
+[Unit]
+Description=Gunicorn daemon (You can change if you want)
+#Requires=curso_django.socket
+After=network.target
+
+[Service]
+User=jhonegratieri
+Group=www-data
+# Restart=on-failure
+EnvironmentFile=/home/jhonegratieri/app_repo/.env
+Environment="PATH=/home/jhonegratieri/app_repo/venv/bin"
+WorkingDirectory=/home/jhonegratieri/app_repo
+# --error-logfile --enable-stdio-inheritance --log-level and --capture-output
+# are all for debugging purposes.
+ExecStart=/home/jhonegratieri/app_repo/venv/bin/gunicorn \
+          --error-logfile /home/jhonegratieri/app_repo/gunicorn-error-log \
+          --enable-stdio-inheritance \
+          --log-level "debug" \
+          --capture-output \
+	  --bind 0.0.0.0:8000 \
+          --access-logfile - \
+	  -k gevent \
+          --workers 1 \
+          project.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
