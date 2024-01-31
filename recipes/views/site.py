@@ -81,7 +81,6 @@ class RecipeListViewCategory(RecipeListViewBase):
                 "title": f'{ctx.get("recipes")[0].category.name} - {category_translation}'
             },
         )
-
         return ctx
 
     def get_queryset(self, *args, **kwargs):
