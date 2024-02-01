@@ -9,7 +9,7 @@ from recipes.serializers import RecipeSerializer, TagSerializer
 from tag.models import Tag
 
 
-@api_view()
+@api_view(http_method_names=["GET", "POST"])
 def recipe_api_list(request):
     if request.method == "GET":
         recipes = Recipe.objects.get_published()[:10]
@@ -24,7 +24,7 @@ def recipe_api_list(request):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(
-            serializer.validated_data,
+            serializer.data,
             status=status.HTTP_201_CREATED,
         )
 
