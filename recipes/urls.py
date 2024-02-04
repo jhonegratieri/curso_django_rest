@@ -1,5 +1,10 @@
 from django.urls import include, path
 from rest_framework.routers import SimpleRouter
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+    TokenVerifyView,
+)
 
 from . import views
 
@@ -52,6 +57,21 @@ urlpatterns = [
         "recipes/api/v2/tag/<int:pk>/",
         views.tag_api_detail,
         name="recipes_api_v2_tag",
+    ),
+    path(
+        "recipes/api/token/verify/",
+        TokenVerifyView.as_view(),
+        name="token_verify",
+    ),
+    path(
+        "recipes/api/token/",
+        TokenObtainPairView.as_view(),
+        name="token_obtain_pair",
+    ),
+    path(
+        "recipes/api/token/refresh/",
+        TokenRefreshView.as_view(),
+        name="token_refresh",
     ),
     path("", include(recipe_api_v2_router.urls)),
 ]
