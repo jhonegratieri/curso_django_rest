@@ -62,7 +62,7 @@ class RecipeMixin:
 
     def make_recipe_in_batch(self, qty=10):
         recipes = []
-        for i in range(8):
+        for i in range(qty):
             kwargs = {
                 "title": f"Recipe title {i}",
                 "slug": f"r{i}",
